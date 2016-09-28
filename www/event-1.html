@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Fudi</title>
+
+<!-- Sets initial viewport load and disables zooming  -->
+<meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, width=device-width" />
+
+<!-- Makes your prototype chrome-less once bookmarked to your phone's home screen -->
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="mobile-web-app-capable" content="yes">
+<link href="css/bootstrap.min.css" rel="stylesheet">
+<link href="css/font-awesome.min.css" rel="stylesheet">
+<link href="css/styles.css" rel="stylesheet">
+<link href="css/bootstrap-datetimepicker.min.css" rel="stylesheet">
+<style>
+.bootstrap-datetimepicker-widget table td.active, .bootstrap-datetimepicker-widget table td.active:hover {
+	background-color: #fff;
+	color: #666;
+	text-shadow: 0 -1px 0 rgba(0,0,0,0.25);
+}
+.bootstrap-datetimepicker-widget table td.green, .bootstrap-datetimepicker-widget table td.green:hover {
+	background-color: #5CB85C !important;
+	color: #FFF !important;
+	text-shadow: 0 -1px 0 rgba(0,0,0,0.25) !important;
+}
+.bootstrap-datetimepicker-widget table td, .bootstrap-datetimepicker-widget table th {
+	border-radius: 0;
+}
+</style>
+</head>
+<body id="wrapper">
+
+
+
+<div id="sidebar-wrapper">
+	<nav id="nav">
+		<ul class="sidebar-nav nav" id="navRight">
+			<li class="L0 menu-heading"><i class="icon-user"></i><strong><a href="#" data-bind="text: lang.Foodie"></a></strong></li>
+			<li class="L2"><i class="icon-pointer-advice"></i><a class="sub" href="map.html" data-bind="text: lang.mnuChefs"></a></li>
+			<li class="L2"><i class="icon-user"></i><a class="sub" href="user-profile.html" data-bind="text: lang.MyProfile"></a></li>
+			<li class="L2"><i class="icon-credit-cards"></i><a class="sub" href="payment-options.html" data-bind="text: lang.PO"></a></li>
+			<li class="L2"><i class="icon-tray"></i><a class="sub" href="reservations.html" data-bind="text: lang.MyOrders"></a></li>
+			<li class="L2"><i class="icon-mail"></i><a class="sub" href="notifications.html" data-bind="text: lang.Notifications"></a></li>
+			<li class="L2"><i class="fa fa-glass"></i><a class="sub" href="events-list.html" data-bind="text: lang.Events"></a></li>
+			<li class="L0 menu-heading"><i class="icon-chef"></i><strong><a data-bind="text: lang.CHEF" href="#"></a></strong></li>
+			<li class="L2 noChef"><i class="icon-chef"></i><a class="sub" data-bind="text: lang.BecomeaChef" href="chef-profile-edit.html"></a></li>
+			<li class="L2 isChef pChef"><i class="icon-chef"></i><a class="sub" data-bind="text: lang.ChefProfile" href="chef-profile-edit.html"></a></li>
+			<li class="L2 isChef"><i class="icon-food"></i><a class="sub" data-bind="text: lang.ManageDishes" href="chef-dishes.html"></a></li>
+			<li class="L2 isChef"><i class="icon-clock"></i><a class="sub" data-bind="text: lang.Schedule" href="chef-calendar-set.html"></a></li>
+			<li class="L2 isChef"><i class="icon-calendar"></i><a class="sub" data-bind="text: lang.DeliverySchedule" href="delivery-schedule.html"></a></li>
+			<li class="L2 isChef"><i class="icon-calendar-1"></i><a class="sub" data-bind="text: lang.PSmenu" href="ps-schedule.html"></a></li>
+			<li class="L2 isChef"><i class="icon-reserve"></i><a class="sub" data-bind="text: lang.ChefReservations" href="chef-reservations.html"></a></li>
+			<li class="L2 isChef"><i class="icon-withdraw"></i><a class="sub" data-bind="text: lang.WithdMon" href="withdraw-money-chef.html"></a></li>
+			<li class="L1"><i class="icon-gear"></i><a href="settings.html" data-bind="text: lang.Settings"></a></li>
+			<li class="L1"><i class="icon-about"></i><a href="about.html" data-bind="text: lang.AboutFudi"></a></li>
+			<li class="L1"><i class="icon-logout"></i><a href="register.html?do=logout" data-bind="text: lang.Logout"></a></li>
+		</ul>
+	</nav>
+</div>
+<div id="user-profile-page" class="content">
+	<h1 id="menu-button"> <a id="menu-toggle" href="#" class="btn-menu toggle"> <i class="fa fa-bars"></i> </a>
+		<p class="pageTitle" style="font-size:24px" xdata-bind="text: lang.PSmenu">Create Event</p>
+	</h1>
+	<div id="topAlert" style="display:none" class="alert alert-warning"><i class="fa fa-warning"></i> <span data-bind="text: lang.FSP"></span></div>
+	<form id="user-form">
+		<div class="form-group">
+			<label xdata-bind="text: lang.PSAPH">Event Title</label>
+			<div>
+				<input class="form-control required" type="text" step="1" name="title" id="event_title"  value="" />
+			</div>
+		</div>
+		<div class="form-group col-xs-6">
+			<label xdata-bind="text: lang.PSAPH">Event Date</label>
+			<div class="input-group" id="txtDate">
+				<input class="form-control required" type="text" name="date" id="event_date" value="" />
+				<div class="input-group-addon"><i class="fa fa-calendar"></i></div>
+			</div>
+		</div>
+		<div class="form-group col-xs-6 last">
+			<label xdata-bind="text: lang.PSAPH">Event Time</label>
+			<div class="input-group" id="txtTime">
+				<input class="form-control required" type="text" name="time" id="event_time" value="" />
+				<div class="input-group-addon"><i class="fa fa-clock-o"></i></div>
+			</div>
+		</div>
+		<div class="form-group">
+			<label xdata-bind="text: lang.PSAPH">Availability</label>
+			<div>
+				<label class="radio-inline">
+					<input type="radio" name="available" class="required" value="Public">
+					Public </label>
+				<label class="radio-inline">
+					<input type="radio" name="available" class="required" value="Private">
+					Private </label>
+			</div>
+		</div>
+		<div class="form-group ">
+			<label xdata-bind="text: lang.PSAPH">Address</label>
+			<div class="input-group" id="pickDiv">
+				<input class="form-control" readonly type="text" name="address" id="address" value="" />
+				<div class="input-group-addon"><i class="fa fa-map-marker"></i></div>
+			</div>
+		</div>
+		<input type="hidden" name="lng" id="lng" value="" >
+		<input type="hidden" name="lat" id="lat" value="" >
+		<div class="form-group">
+			<label _data-bind="text: lang.PSAPH">Enterance Fee</label>
+			<div class="input-group">
+				<div class="input-group-addon">$</div>
+				<input class="form-control required" type="number" name="entry_fee" id="enterance_fee" value="0.00" />
+			</div>
+		</div>
+		<div class="form-group">
+			<label xdata-bind="text: lang.PSRq">Expected Number of Guests</label>
+			<input type="number" class="form-control" name="guests_apx" id="guests" />
+		</div>
+		<button type="button" id="btn-submit" class="btn btn-positive btn-block btn-submit" xdata-bind="text: lang.Save">Next</button>
+	</form>
+</div>
+<br />
+<br />
+<br />
+
+<div class="modal modal-fullscreen fade" id="mapModal" tabindex="-1" role="dialog" aria-hidden="true">
+	<div class="modal-dialog" style="height:100%; width:100%;">
+		<div class="modal-content " style="height:100%; width:100%;">
+			<div class="modal-body" style="height:100%; width:100%;">
+				<div id="map" style="height:100%; width:100%;"></div>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+<script src="cordova.js"></script> 
+<script src="js/jquery-1.11.3.min.js"></script> 
+<script src="js/jquery.validate.min.js"></script> 
+<script src="js/bootstrap.min.js"></script> 
+<script src='js/knockout-3.4.0.js'></script>
+<script src="http://maps.google.com/maps/api/js?key=AIzaSyBrGQ3WXjDyt6lu6OLS4RDNBXYb3Wr-l_Y"></script>  
+<script src="js/common.js"></script> 
+<script src="js/moment.min.js"></script> 
+<script src="js/bootstrap-datetimepicker.min.js"></script> 
+<script>
+
+
+var thisDate;
+var thisTime;
+
+var map;
+var myLatLng;
+var controlDiv2;	// Set Delivery Location button
+var controlDiv4;  // geo Address;
+
+function MyControl(controlDiv, map) {
+	var controlImg = document.createElement('IMG');
+	controlImg.style.width = '96px';
+	controlImg.style.height = '96px';
+	//controlImg.style.marginBottom = '30px';
+	controlImg.width = '96';
+	controlImg.height = '96';
+	controlImg.src = 'images/green-home2.png?3';
+	controlDiv.appendChild(controlImg);
+}
+function MyControl2(controlDiv, mapp) {
+	// Set CSS for the control border.
+	var controlUI = document.createElement('div');
+	controlUI.style.backgroundColor = '#3e3e3e';
+	controlUI.style.border = '2px solid #3e3e3e';
+	controlUI.style.borderRadius = '3px';
+	controlUI.style.boxShadow = '0 2px 4px rgba(0,0,0,.3)';
+	controlUI.style.cursor = 'pointer';
+	controlUI.style.marginTop = '-115px';
+
+	controlUI.style.textAlign = 'center';
+	controlUI.title = 'Click to recenter the map';
+	controlDiv.appendChild(controlUI);
+	
+	// Set CSS for the control interior.
+	var controlText = document.createElement('div');
+	controlText.style.color = '#FFFFFF';
+	controlText.style.fontFamily = 'Roboto,Arial,sans-serif';
+	controlText.style.fontSize = '18px';
+	controlText.style.lineHeight = '30px';
+	controlText.style.paddingLeft = '8px';
+	controlText.style.paddingRight = '8px';
+	controlText.innerHTML = 'Set Event Location <img src="images/arrow.png" width="18" height="18" />';
+	
+	
+	
+	controlUI.appendChild(controlText);
+	
+	// Location Picked
+	controlUI.addEventListener('click', function() {
+		$('#mapModal').modal('hide');
+		setTimeout(function() {
+			var Tmp = map.getCenter();
+			localStorage.setItem('Deliverylat', Tmp.lat());
+			localStorage.setItem('Deliverylng', Tmp.lng());
+			console.log(map.getCenter().toString());
+			$('#lng').val(Tmp.lng());
+			$('#lat').val(Tmp.lat());
+			
+			
+			$('#address').val( $(controlDiv4).find('div.cAddress').html() );
+				
+     	}, 800);
+	});
+}
+
+function ControlAddress(controlDiv, map) {
+	// Set CSS for the control border.
+var controlUI = document.createElement('div');
+	controlUI.style.backgroundColor = '#3e3e3e';
+	controlUI.style.border = '2px solid #3e3e3e';
+	controlUI.style.borderRadius = '3px';
+	controlUI.style.boxShadow = '0 2px 4px rgba(0,0,0,.3)';
+	controlUI.style.cursor = 'pointer';
+	controlUI.style.marginTop = '100px';
+	controlUI.style.textAlign = 'center';
+	//controlUI.style.width = '100%';
+	controlUI.title = 'Address here';
+	controlDiv.appendChild(controlUI);
+	// Set CSS for the control interior.
+	var controlText = document.createElement('div');
+	controlText.className = 'cAddress';
+	controlText.style.color = '#FFFFFF';
+	controlText.style.fontFamily = 'Roboto,Arial,sans-serif';
+	controlText.style.fontSize = '14px';
+	controlText.style.lineHeight = '30px';
+	controlText.style.paddingLeft = '8px';
+	controlText.style.paddingRight = '8px';
+	controlText.innerHTML = '';
+	controlUI.style.width = ($('#map').width()-10)+'px';
+	controlUI.appendChild(controlText);
+	// Setup the click event listeners: simply set the map to Chicago.
+}
+
+function MyControl3(controlDiv, map) {
+	// Set CSS for the control border.
+	var controlUI = document.createElement('div');
+	controlUI.style.backgroundColor = '#3e3e3e';
+	controlUI.style.border = '2px solid #3e3e3e';
+	controlUI.style.borderRadius = '3px';
+	controlUI.style.boxShadow = '0 2px 4px rgba(0,0,0,.3)';
+	controlUI.style.cursor = 'pointer';
+	controlUI.style.marginTop = '10px';
+	controlUI.style.marginRight = '10px';
+	
+	controlUI.style.textAlign = 'center';
+	controlUI.title = 'Click to recenter the map';
+	controlDiv.appendChild(controlUI);
+	
+	// Set CSS for the control interior.
+	var controlText = document.createElement('div');
+	controlText.style.color = '#FFFFFF';
+	controlText.style.fontFamily = 'Roboto,Arial,sans-serif';
+	controlText.style.fontSize = '14px';
+	controlText.style.lineHeight = '30px';
+	controlText.style.paddingLeft = '8px';
+	controlText.style.paddingRight = '8px';
+	controlText.innerHTML = 'Cancel';
+	controlUI.appendChild(controlText);
+
+	// Setup the click event listeners: simply set the map to Chicago.
+	controlUI.addEventListener('click', function() {
+		$('#mapModal').modal('hide');
+		
+	});
+}
+function initMap(){
+	console.log('initMap');
+	
+	if(!empty(localStorage.getItem('Deliverylat'))){
+		myLatLng =  new google.maps.LatLng( localStorage.getItem('Deliverylat') , localStorage.getItem('Deliverylng') );		
+	}else{
+		myLatLng =  new google.maps.LatLng( localStorage.getItem('lat') , localStorage.getItem('lng') );
+	}
+	var mapOptions = {
+		center: myLatLng,
+		mapTypeId: google.maps.MapTypeId.ROADMAP,
+		zoom:15,
+		scrollwheel: false,
+	};
+					 
+	map = new google.maps.Map(document.getElementById('map'), mapOptions);
+	geocoder = new google.maps.Geocoder;
+	
+	var controlDiv = document.createElement('div');
+	var myControl = new MyControl(controlDiv);
+	controlDiv.index = 1;
+	map.controls[google.maps.ControlPosition.CENTER].push(controlDiv);
+	
+	var controlDiv2 = document.createElement('div');
+	
+	var myControl2 = new MyControl2(controlDiv2);
+	controlDiv2.index = 2;
+	map.controls[google.maps.ControlPosition.CENTER].push(controlDiv2);
+	
+	var controlDiv3 = document.createElement('div');
+	var myControl3 = new MyControl3(controlDiv3);
+	controlDiv3.index = 3;
+	map.controls[google.maps.ControlPosition.TOP_RIGHT].push(controlDiv3);
+	
+	controlDiv4 = document.createElement('div');
+	var myControl4 = new ControlAddress(controlDiv4);
+	controlDiv3.index = 4;
+	map.controls[google.maps.ControlPosition.TOP_CENTER].push(controlDiv4);
+	
+	getGeoAddress();
+	
+	
+	map.addListener('dragstart', function() {
+		$(controlDiv2).hide();
+		$(controlDiv4).hide();
+	});
+	map.addListener('dragend', function() {
+		$(controlDiv2).show();
+		$(controlDiv4).show();
+		getGeoAddress();
+	});
+	
+	
+} // end initMap
+
+function getGeoAddress(){
+	var Tmp = map.getCenter();	
+	geocoder.geocode({
+		latLng: Tmp
+	}, function(results, status) {
+		if (status == google.maps.GeocoderStatus.OK) {
+			if (results[0]) {
+				$(controlDiv4).find('div.cAddress').html(results[0].formatted_address);
+				//$('#address').html(results[0].formatted_address);
+				//console.log(results[0]);	//results[0].formatted_address;
+			}
+		} else {
+			$(controlDiv4).find('div.cAddress').html('Unknown');
+		}
+	});	
+}
+
+$(document).ready(function(e) {
+	var Tomorrow = moment().add('days', 1);
+	$('#txtDate').datetimepicker({format: 'MM/DD/YY', minDate:Tomorrow });
+	$('#txtDate').on('dp.change', function(m) {
+		thisDate = m.date.format("YYYY-MM-DD");
+	});
+	
+	
+	$('#txtTime').datetimepicker({format: 'LT', stepping:30});
+	$('#txtTime').on('dp.change', function(m) {
+		thisTime = m.date.format("HH:mm:00");
+	});
+
+	$('#pickDiv > *').on('click',function(){
+		console.log(' map ')	;
+			setTimeout( function() {
+				initMap();
+			}, 500);
+		$('#mapModal').modal();
+	});
+	
+	
+	$('#btn-submit').on('click',function(){
+		$("#user-form").submit();
+	});
+	
+	if( !empty(localStorage.getItem('eventData'))){
+		var eventOb =	JSON.parse(localStorage.getItem('eventData'));
+		
+		
+		
+
+		$('#user-form').find(':input').each(function(){
+			el = $(this);
+			if( el.prop('type') == 'radio' || el.prop('type') == 'checkbox'  ){
+				if( el.val() == eventOb[el.prop('name')] ){ el.prop('checked', true); el.trigger('change'); }
+			}else{
+				if( !empty(eventOb[el.prop('name')])  ){
+					el.val( eventOb[el.prop('name')] );
+				}
+			}
+		});
+		
+		m = moment(eventOb.date+' '+eventOb.time);
+		$('#txtDate').data("DateTimePicker").date(m);
+		$('#txtTime').data("DateTimePicker").date(m);
+		
+		
+	
+	}
+	
+	
+	$("#user-form").validate({
+		errorPlacement: function(error, element) {},
+		submitHandler: function(form) {
+			
+			if( $('#lat').val().length < 4 ){
+				BAlert.find('.modal-header h3').html('<i class="fa fa-exclamation-triangle"></i> '+cLan.Error);
+				BAlert.find('.modal-body').html('<p class="text-danger">'+'Please specify the event address!'+'</p>');
+				BAlert.modal();
+				return false;
+			}
+			var eventOb = {};
+			
+			$('#user-form').find(':input').each(function(){
+				el = $(this);
+				if( el.prop('type') == 'radio' || el.prop('type') == 'checkbox'  ){
+					if( el.prop('checked') == true ){ eventOb[el.prop('name')] = el.val();  }
+				}else{
+					if(!empty(el.prop('name'))){
+						eventOb[el.prop('name')] =  el.val();
+					}
+				}
+			});
+			eventOb['date'] = thisDate;
+			eventOb['time'] = thisTime;
+			eventOb['address'] = $('#address').val();
+			
+			if(localStorage.getItem('chefStatus')==2 && !empty(localStorage.getItem('chefData'))){ // event creator is a Chef
+				var chefData = JSON.parse(localStorage.getItem('chefData'));
+				eventOb['creator_name'] = chefData.company;
+				
+			}else if(!empty(localStorage.getItem('userData'))){			// event creator is a User
+				var userData = JSON.parse(localStorage.getItem('userData'));
+				eventOb['creator_name'] = userData.first_name+' '+userData.last_name;
+			}
+			
+			console.log(eventOb);
+			
+			localStorage.setItem('eventData', JSON.stringify(eventOb) );
+			document.location = 'event-2.html';
+		}// submit handler
+	});	
+	
+	
+});
+
+
+
+
+
+
+</script>
+</body>
+</html>

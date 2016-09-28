@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Fudi</title>
+
+<!-- Sets initial viewport load and disables zooming  -->
+<meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, width=device-width" />
+
+<!-- Makes your prototype chrome-less once bookmarked to your phone's home screen -->
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="mobile-web-app-capable" content="yes">
+<link href="css/bootstrap.min.css" rel="stylesheet">
+<link href="css/font-awesome.min.css" rel="stylesheet">
+<link href="css/styles.css" rel="stylesheet">
+<link rel="stylesheet" type="text/css" href="css/jquery-gmaps-latlon-picker.css"/>
+<style></style>
+</head>
+<body id="wrapper">
+<div id="sidebar-wrapper">
+	<nav id="nav">
+		<ul class="sidebar-nav nav" id="navRight">
+			<li class="L0 menu-heading"><i class="icon-user"></i><strong><a href="#" data-bind="text: lang.Foodie"></a></strong></li>
+			<li class="L2"><i class="icon-pointer-advice"></i><a class="sub" href="map.html" data-bind="text: lang.mnuChefs"></a><li></li>
+			<li class="L2"><i class="icon-user"></i><a class="sub" href="user-profile.html" data-bind="text: lang.MyProfile"></a></li>
+			<li class="L2"><i class="icon-credit-cards"></i><a class="sub" href="payment-options.html" data-bind="text: lang.PO"></a></li>
+			<li class="L2"><i class="icon-tray"></i><a class="sub" href="reservations.html" data-bind="text: lang.MyOrders"></a></li>
+			<li class="L2"><i class="icon-mail"></i><a class="sub" href="notifications.html" data-bind="text: lang.Notifications"></a></li>
+			<li class="L0 menu-heading"><i class="icon-chef"></i><strong><a data-bind="text: lang.CHEF" href="#"></a></strong></li>
+			<li class="L2 noChef"><i class="icon-chef"></i><a class="sub" data-bind="text: lang.BecomeaChef" href="chef-profile-edit.html"></a></li>
+			<li class="L2 isChef pChef"><i class="icon-chef"></i><a class="sub" data-bind="text: lang.ChefProfile" href="chef-profile-edit.html"></a></li>
+			<li class="L2 isChef"><i class="icon-food"></i><a class="sub" data-bind="text: lang.ManageDishes" href="chef-dishes.html"></a></li>
+			<li class="L2 isChef"><i class="icon-clock"></i><a class="sub" data-bind="text: lang.Schedule" href="chef-calendar-set.html"></a></li>
+			<li class="L2 isChef"><i class="icon-calendar"></i><a class="sub" data-bind="text: lang.DeliverySchedule" href="delivery-schedule.html"></a></li>
+			<li class="L2 isChef"><i class="icon-calendar-1"></i><a class="sub" data-bind="text: lang.PSmenu" href="ps-schedule.html"></a></li>
+			<li class="L2 isChef"><i class="icon-reserve"></i><a class="sub" data-bind="text: lang.ChefReservations" href="chef-reservations.html"></a></li>
+			<li class="L2 isChef"><i class="icon-withdraw"></i><a class="sub" data-bind="text: lang.WithdMon" href="withdraw-money-chef.html"></a></li>
+			<li class="L1"><i class="icon-gear"></i><a href="settings.html" data-bind="text: lang.Settings"></a></li>
+			<li class="L1"><i class="icon-about"></i><a href="about.html" data-bind="text: lang.AboutFudi"></a></li>
+			<li class="L1"><i class="icon-logout"></i><a href="register.html?do=logout" data-bind="text: lang.Logout"></a></li>
+		</ul>
+	</nav>
+</div>
+<div id="user-profile-page" class="content">
+	<h1 id="menu-button"> <a id="menu-toggle" href="#" class="btn-menu toggle"> <i class="fa fa-bars"></i> </a>
+		<p class="pageTitle" data-bind="text: lang.WithdMon"></p>
+	</h1>
+	<div id="aLoading" class="aLoading text-center" style="display:none"><img src="images/loading.gif" sytle=" margin: 0 auto;" /></div>
+	<form id="user-form" class="form-inline" style="display:none">
+		<table class="table table-responsive lead">
+			<tr>
+				<td data-bind="text: lang.ReferralAmount">Referral Amount</td>
+				<td class="text-right" id="tdRefBalance">$0.00</td>
+			</tr>
+			<tr>
+				<td data-bind="text: lang.OrdersAmount">Orders Amount</td>
+				<td class="text-right" id="tdChefBalance">$0.00</td>
+			</tr>
+			<tr class="info">
+				<td data-bind="text: lang.Av4Withdraw">Availabe for Withdrawal</td>
+				<td class="text-right" id="tdAvTotal">$0.00</td>
+			</tr>
+		</table>		
+		<br />
+		<div class="form-group">
+    <label class="" for="exampleInputAmount" data-bind="text: lang.AmtToWithdraw">Withdraw Amount</label>
+    <div class="input-group">
+      <div class="input-group-addon">$</div>
+      <input type="text" class="form-control" id="wAmount" name="wAmount" placeholder="Amount">
+    </div>
+  </div>
+  <button type="button" id="btnWithdraw" class="btn btn-primary pull-right" data-bind="text: lang.WithdrawNow">Withdraw Now</button>
+		
+		
+	</form>
+</div>
+
+
+<div id="bottom-bar">
+	<div class="container">
+		<div class="row">
+			<div class="col-xs-3 no-padding"> <a class="tab-item " href="map.html"> <img class="tab-icon" src="images/map-icon.png" alt="map-icon"> 
+				<!-- <i class="fa fa-map-o tab"></i> --> 
+				<img class="border-image" src="images/border-image.png" alt="border-image"> </a> </div>
+			<div class="col-xs-3 no-padding"> <a class="tab-item" href="reservations.html"> <img class="tab-icon" src="images/food-icon.png" alt="food-icon"> <img class="border-image" src="images/border-image.png" alt="border-image"> </a> </div>
+			<div class="col-xs-3 no-padding"> <a class="tab-item" href="user-profile.html"> <img class="tab-icon" src="images/profile-icon.png" alt="map-icon"><img class="border-image" src="images/border-image.png" alt="border-image"> </a> </div>
+			<div class="col-xs-3 no-padding"> <a class="tab-item " id="anoti" href="notifications.html"> <img class="tab-icon" src="images/notification-icon.png" alt="map-icon"> </a>	</div>
+		</div>
+	</div>
+</div>
+
+<script src="cordova.js"></script> 
+<script src="js/jquery-1.11.3.min.js"></script> 
+<script src="js/jquery.validate.min.js"></script> 
+<script src="js/bootstrap.min.js"></script> 
+<script src='js/knockout-3.4.0.js'></script>
+<script src="js/moment.min.js"></script> 
+<script src="js/common.js"></script> 
+<script>
+
+
+var RefBalance = 0.00;
+var ChefBalance = 0.00;
+var TotalAvailable = 0.00;
+
+
+$(document).ready(function(e) {
+	
+	$('#btnWithdraw').on('click',function(){
+		$("#user-form").submit();	
+	});
+
+	
+	loadMainData();
+	
+	
+	$("#user-form").validate({ // Insert/Edit Record ==============
+		errorPlacement: function(error, element) {},
+		beforeSend: function() { waitingDialog.show(cLan.Loading, {dialogSize: 'sm', progressType: 'info'}); },
+		complete: function() { waitingDialog.hide(); },
+		submitHandler: function(form) {
+			var wAmount = parseFloat($('#wAmount').val());
+			if( wAmount > TotalAvailable ){
+				$('#wAmount').val(TotalAvailable);
+				wAmount = TotalAvailable;
+			}
+			
+			if( wAmount < 5.0 ){
+				BAlert.find('.modal-header h3').html('<i class="fa fa-exclamation-triangle"></i> '+cLan.Error);
+				BAlert.find('.modal-body').html('<p class="text-danger">'+cLan.s127+'</p>');
+				BAlert.modal();
+			}else{
+
+				formData = $(form).serialize();
+				formData += '&userId='+localStorage.getItem('userId')+'&userToken='+localStorage.getItem('userToken'); 
+				$.ajax({
+					type: "POST", dataType: 'json', url: ServerAjax+"?h=ChefWithdraw", data: formData,
+					beforeSend: function() { waitingDialog.show(cLan.Loading, {dialogSize: 'sm', progressType: 'info'}); },
+					complete: function() { waitingDialog.hide(); },
+				}).fail(  ajaxError )
+				.done(function(data){
+					if (data.Success == 'true') {
+						BAlert.find('.modal-header h3').html('<i class="fa check"></i>'+cLan.Success);
+						BAlert.find('.modal-body').html('<p class="text-success">'+cLan[208]+'.</p>');
+						BAlert.modal();
+						loadMainData();
+					} else { 
+						ErrorModalWithParm(data);
+					}
+					if (data.JS) { eval(data.JS); }
+				
+				}); // ajax	
+				
+			}
+
+		}// submit handler
+	});
+	
+	
+	
+
+	
+	
+	
+});
+
+function loadMainData(){
+	var formData = '';
+	formData += 'userId='+localStorage.getItem('userId')+'&userToken='+localStorage.getItem('userToken'); 
+	$.ajax({
+		type: "POST", dataType: 'json', url: ServerAjax+"?h=getChefWithdrawAmount", data: formData,
+		beforeSend: function() { waitingDialog.show(cLan.Loading, {dialogSize: 'sm', progressType: 'info'}); },
+		complete: function() { waitingDialog.hide(); },
+	}).fail(  ajaxError )
+	.done(function(data){
+		if (data.Success == 'true') {
+			
+			RefBalance = parseFloat(data.RefBalance);
+			ChefBalance = parseFloat(data.ChefBalance);
+			
+			$('#tdRefBalance').html('$'+RefBalance.toFixed(2));
+			$('#tdChefBalance').html('$'+ChefBalance.toFixed(2));
+			TotalAvailable = RefBalance + ChefBalance;
+			$('#tdAvTotal').html('$'+TotalAvailable.toFixed(2));
+			$('#wAmount').val(TotalAvailable.toFixed(2));
+			$('#user-form').show();
+			
+		} else { 
+			ErrorModalWithParm(data);
+		}
+		if (data.JS) { eval(data.JS); }
+	
+	}); // ajax	
+}
+
+
+
+
+</script>
+</body>
+</html>

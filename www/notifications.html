@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Fudi</title>
+
+<!-- Sets initial viewport load and disables zooming  -->
+<meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, width=device-width" />
+
+<!-- Makes your prototype chrome-less once bookmarked to your phone's home screen -->
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="mobile-web-app-capable" content="yes">
+<link href="css/bootstrap.min.css" rel="stylesheet">
+<link href="css/font-awesome.min.css" rel="stylesheet">
+<link href="css/styles.css" rel="stylesheet">
+</head>
+<body id="wrapper">
+<div id="sidebar-wrapper">
+	<nav id="nav">
+		<ul class="sidebar-nav nav" id="navRight">
+			<li class="L0 menu-heading"><i class="icon-user"></i><strong><a href="#" data-bind="text: lang.Foodie"></a></strong></li>
+			<li class="L2"><i class="icon-pointer-advice"></i><a class="sub" href="map.html" data-bind="text: lang.mnuChefs"></a><li></li>
+			<li class="L2"><i class="icon-user"></i><a class="sub" href="user-profile.html" data-bind="text: lang.MyProfile"></a></li>
+			<li class="L2"><i class="icon-credit-cards"></i><a class="sub" href="payment-options.html" data-bind="text: lang.PO"></a></li>
+			<li class="L2"><i class="icon-tray"></i><a class="sub" href="reservations.html" data-bind="text: lang.MyOrders"></a></li>
+			<li class="L2"><i class="icon-mail"></i><a class="sub" href="notifications.html" data-bind="text: lang.Notifications"></a></li>
+			<li class="L0 menu-heading"><i class="icon-chef"></i><strong><a data-bind="text: lang.CHEF" href="#"></a></strong></li>
+			<li class="L2 noChef"><i class="icon-chef"></i><a class="sub" data-bind="text: lang.BecomeaChef" href="chef-profile-edit.html"></a></li>
+			<li class="L2 isChef pChef"><i class="icon-chef"></i><a class="sub" data-bind="text: lang.ChefProfile" href="chef-profile-edit.html"></a></li>
+			<li class="L2 isChef"><i class="icon-food"></i><a class="sub" data-bind="text: lang.ManageDishes" href="chef-dishes.html"></a></li>
+			<li class="L2 isChef"><i class="icon-clock"></i><a class="sub" data-bind="text: lang.Schedule" href="chef-calendar-set.html"></a></li>
+			<li class="L2 isChef"><i class="icon-calendar"></i><a class="sub" data-bind="text: lang.DeliverySchedule" href="delivery-schedule.html"></a></li>
+			<li class="L2 isChef"><i class="icon-calendar-1"></i><a class="sub" data-bind="text: lang.PSmenu" href="ps-schedule.html"></a></li>
+			<li class="L2 isChef"><i class="icon-reserve"></i><a class="sub" data-bind="text: lang.ChefReservations" href="chef-reservations.html"></a></li>
+			<li class="L2 isChef"><i class="icon-withdraw"></i><a class="sub" data-bind="text: lang.WithdMon" href="withdraw-money-chef.html"></a></li>
+			<li class="L1"><i class="icon-gear"></i><a href="settings.html" data-bind="text: lang.Settings"></a></li>
+			<li class="L1"><i class="icon-about"></i><a href="about.html" data-bind="text: lang.AboutFudi"></a></li>
+			<li class="L1"><i class="icon-logout"></i><a href="register.html?do=logout" data-bind="text: lang.Logout"></a></li>
+		</ul>
+	</nav>
+</div>
+
+
+<div id="notification-page" class="content">
+	<h1 id="menu-button"> <a id="menu-toggle" href="#" class="btn-menu toggle"> <i class="fa fa-bars"></i> </a> </h1>
+	<p class="pageTitle" data-bind="text: lang.Notifications"></p>
+	
+	<div class="text-center hidden">
+		<button id="btnClear" class="btn btn-primary"><i class="fa fa-eraser"></i> Clear All</button>
+	</div>
+
+	
+	<div id="notification-container">
+		<div class="media hidden">
+			<div class="media-left">
+				<i class="fa fa-bell-o"></i>
+			</div>
+			<div class="media-body">
+				<h3>Notifi</h3>
+				<p>Lorem ipsum dolor sit amet, consectetur amet adipisicing elit. Vero voluptates pariatur tempora.</p>
+			</div>
+		</div>
+		<div class="aLoading text-center" style="display:none"><img src="images/loading.gif" sytle=" margin: 0 auto;" /></div>
+	</div>
+</div>
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<div id="bottom-bar">
+	<div class="container">
+		<div class="row">
+			<div class="col-xs-3 no-padding"> <a class="tab-item " href="map.html"> <i class="icon-map"></i> </a> </div>
+				<div class="col-xs-3 no-padding"> <a class="tab-item" href="reservations.html"> <i class="icon-bell-covering-hot-dish"></i> </a> </div>
+				<div class="col-xs-3 no-padding"> <a class="tab-item " href="user-profile.html"> <i class="icon-user-1"></i> </a> </div>
+				<div class="col-xs-3 no-padding"> <a class="tab-item active" id="anoti" href="notifications.html"> <i class="icon-alarm"></i> </a>	</div>
+		</div>
+	</div>
+</div>
+<script src="js/jquery-1.11.3.min.js"></script> 
+<script src="js/jquery.validate.min.js"></script> 
+<script src="js/bootstrap.min.js"></script>
+<script src='js/knockout-3.4.0.js'></script> 
+<script src="js/common.js"></script> 
+<script>
+
+var RetPage = null;
+
+$(document).ready(function(e) {
+	
+	RetPage = getUrlParameter('ret');
+	
+	if( localStorage.getItem('userData') === null ){
+	
+	}else{
+		loadNotifications();
+	}
+	
+	
+	
+	
+	$('#btnClear').on('click',function(){
+		
+	});
+	
+	
+});
+
+function loadNotifications(){
+	formData = 'user_id='+ localStorage.getItem('userId');
+	formData += '&userToken='+ localStorage.getItem('userToken');
+	$.ajax({
+		type: "POST", dataType: 'json', url: ServerAjax+"?h=getNotifications", data: formData,
+		beforeSend: function() { $('div.aLoading').show();  },
+		complete: function() { $('div.aLoading').hide(); },
+	}).fail(  ajaxError )
+	.done(function(data){
+		if (data.Success == 'true') {
+			if(data.Count > 0 ){
+				resData = data.Notifications;
+				$DTemp = $('div.media');
+				for (var i = 0; i < resData.length; i++) {
+					$copy = $DTemp.clone().removeClass('hidden');
+					$copy.find('div.media-body h3').html( resData[i].title);
+					$copy.find('div.media-body p').html( resData[i].text);
+					$copy.appendTo('#notification-container');
+				}
+				//$DTemp.remove();
+			}else{
+				$('#notification-container').html('<center>'+cLan.NoNotifications+'</center>');
+			}
+		}else { 
+			BAlert.find('.modal-header h3').html('<i class="fa fa-exclamation-triangle"></i> '+cLan.Error);
+			BAlert.find('.modal-body').html('<p class="text-danger">'+data.Msg+'</p>');
+			BAlert.modal();
+		}
+		if (data.JS) { eval(data.JS); }
+	
+	}); // ajax	
+}
+
+
+</script>
+</body>
+</html>
