@@ -17,82 +17,6 @@
 <link href="css/font-awesome.min.css" rel="stylesheet">
 <!--<link href="css/ratchet.css" rel="stylesheet">-->
 <link href="css/styles.css" rel="stylesheet">
-
-<style>
-
-.panel{
-	background:transparent;
-	border:none;
-}
-#lgn-sign-page form{
-	padding:0px;
-}
-.btn-positive{
-	font-size:16px;
-	color:#ffffff;
-	padding:8px;
-}
-a.btn
-{
-	padding:0px;
-}
-#lgn-sign-page{
-	height:auto !important;
-}
-.panel-body
-{
-	padding:0px 15px;
-}
-#loginbox {
-  background: rgba(131, 49, 0, 0.2) none repeat scroll 0 0;
-}
-.mainbox {
-  background: rgba(0, 226, 175, 0.2) none repeat scroll 0 0;
-  display: inline-block;
-  width: 100%;
-}
-#loginbox button {
-  background: #ff530d;
-  border-color: #ff530d;
-}
-.input-group-addon.for-user, .login-form .form-group .form-control {
-  background: rgba(255, 255, 255, 0.8) none repeat scroll 0 0 !important;
-  border: 1px solid GREY !important;
-}
-#lgn-sign-page form .for-user i.fa {
-  font-size: 15px;
-  width: 35px !important;
-}
-.input-group-addon{
-	padding:6px 0px;
-}
-::-webkit-input-placeholder { /* Chrome/Opera/Safari */
-  color:#555 !important;
-}
-::-moz-placeholder { /* Firefox 19+ */
-  color:#555 !important;
-}
-:-ms-input-placeholder { /* IE 10+ */
-  color:#555 !important;
-}
-:-moz-placeholder { /* Firefox 18- */
-  color:#555 !important;
-}
-#lgn-sign-page form
-{
-padding-bottom:27px;
-display:inline-block;
-width:100%;
-}
-@media (min-width:350px) and (max-width:767px)
-{
-	#lgn-sign-page .input-group, #lgn-sign-page button{
-		width:80% !important;
-		margin:0 auto;
-	}
-}
-
-</style>
 </head>
 <body>
 
@@ -100,70 +24,65 @@ width:100%;
 
 <!-- Wrap all non-bar HTML in the .content div (this is actually what scrolls) -->
 <div id="lgn-sign-page" class="content">
-    <div id="signupbox" style="" class="mainbox">                    
-        <div class="panel panel-info" >
-                    
-
-                <div style="" class="panel-body" >
-
-                <form id="frmRegister" method="post"  class="user-form login-form">
-                    <h4 class="form-heading text-center" data-bind="text: lang.CreateandRegister">Create and Register</h4>
-                    <div class="form-group">
-                        <div class="input-group">
-                            <div class="input-group-addon for-user"><i class="fa fa-at"></i></div>
-                            <input type="email" placeholder="Email Address" value="" autocomplete="off" name="n[email]" class="form-control required email" />
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <div class="input-group">
-                            <div class="input-group-addon for-user"><i class="fa fa-lock"></i></div>
-                            <input type="password" placeholder="Choose Password" autocomplete="off" name="n[password]" id="regPwd" class="form-control required" />
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <div class="input-group">
-                            <div class="input-group-addon for-user"><i class="fa fa-lock"></i></div>
-                            <input type="password" placeholder="Retype Password" autocomplete="off" name="repassword" id="regRePwd" class="form-control required" />
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <div class="input-group">
-                            <div class="input-group-addon for-user"><i class="fa fa-share-alt"></i></div>
-                            <input type="text" data-bind="attr: { placeholder: lang.Refcode }" placeholder="Referral Code" autocomplete="off" name="refcode" id="refcode" class="form-control" />
-                        </div>
-                    </div>
-                    
-                    
-                    
-                    <button type="submit" class="btn btn-positive btn-block" data-bind="text: lang.Signup">Sign up</button>
-                </form>
-           </div>
-       </div>
-    </div>
-    <form id="loginbox" class="user-form login-form" method="post">
-    <div class="panel panel-info" >
-        <div style="border-top:1px solid #ffffff;" class="panel-body" >
-            <h4 class="form-heading text-center" data-bind="text: lang.Logintoyouraccount">Login To Existing Account</h4>
-            <div class="form-group">
-                <div class="input-group">
-                    <div class="input-group-addon for-user"><i class="fa fa-at"></i></div>
-                    <input type="email" name="email" placeholder="Email Address" class="form-control required email" />
-                </div>
-            </div>
-            <div class="form-group">
-                <div class="input-group">
-                    <div class="input-group-addon for-user"><i class="fa fa-lock"></i></div>
-                    <input type="password" name="password" placeholder="Password" class="form-control required">
-                </div>
-            </div>
-            <button class="btn btn-positive btn-block" data-bind="text: lang.Login">Login</button>
-            <a id="aForgot" class="btn btn-link btn-block" style="color:#FFF; margin-top:20px;" data-bind="text: lang.FGlink">Forgot Password?</a>
-            
-            </div>
-       </div>
-   </form>
-        
- </div>
+	<div id="lgn-signUp-buton">
+		<div class="col-xs-12">
+			<div class="col-xs-6 no-padding"> <a href="#" class="btn btn-default btn-block btn-user btn-sign-in" data-bind="text: lang.Login">Login</a> </div>
+			<div class="col-xs-6 no-padding"> <a href="#" class="btn btn-default btn-block btn-user btn-register btn-active" data-bind="text: lang.Register">Register</a> </div>
+		</div>
+	</div>
+	<form id="frmLogin" class="user-form login-form" method="post" style="display:none">
+		<h4 class="form-heading text-center" data-bind="text: lang.Logintoyouraccount">Login to your account</h4>
+		<div class="form-group">
+			<div class="input-group">
+				<div class="input-group-addon for-user"><i class="fa fa-at"></i></div>
+				<input type="email" name="email" placeholder="Email" class="form-control required email" />
+			</div>
+		</div>
+		<div class="form-group">
+			<div class="input-group">
+				<div class="input-group-addon for-user"><i class="fa fa-lock"></i></div>
+				<input type="password" name="password" placeholder="Password" class="form-control required">
+			</div>
+		</div>
+		<button class="btn btn-positive btn-block" data-bind="text: lang.Login">Login</button>
+		<a id="aForgot" class="btn btn-link btn-block" style="color:#FFF" data-bind="text: lang.FGlink">Forgot Password?</a>
+	</form>
+	<form id="frmRegister" method="post"  class="user-form login-form">
+		<h4 class="form-heading text-center" data-bind="text: lang.CreateandRegister">Create and Register</h4>
+		
+		
+		
+		<div class="form-group">
+			<div class="input-group">
+				<div class="input-group-addon for-user"><i class="fa fa-at"></i></div>
+				<input type="email" placeholder="Email" value="" autocomplete="off" name="n[email]" class="form-control required email" />
+			</div>
+		</div>
+		<div class="form-group">
+			<div class="input-group">
+				<div class="input-group-addon for-user"><i class="fa fa-lock"></i></div>
+				<input type="password" placeholder="Choose Password" autocomplete="off" name="n[password]" id="regPwd" class="form-control required" />
+			</div>
+		</div>
+		<div class="form-group">
+			<div class="input-group">
+				<div class="input-group-addon for-user"><i class="fa fa-lock"></i></div>
+				<input type="password" placeholder="Retype Password" autocomplete="off" name="repassword" id="regRePwd" class="form-control required" />
+			</div>
+		</div>
+		<div class="form-group">
+			<div class="input-group">
+				<div class="input-group-addon for-user"><i class="fa fa-share-alt"></i></div>
+				<input type="text" data-bind="attr: { placeholder: lang.Refcode }" placeholder="Referral Code" autocomplete="off" name="refcode" id="refcode" class="form-control" />
+			</div>
+		</div>
+		
+		
+		
+		<button type="submit" class="btn btn-positive btn-block" data-bind="text: lang.Signup">Sign up</button>
+	</form>
+	
+	
 
 
 <div class="modal fade" id="popForgot" tabindex="-1" role="dialog" aria-hidden="true">
@@ -225,6 +144,14 @@ width:100%;
 		
 	</div>
 </div>
+	
+	
+	
+	<div id="social-icon" class="text-center" style="display:none">
+		<h4>Or Sign up with</h4>
+		<a href="#"><img src="images/facebook.png" alt="facebook"></a> <a href="#"><img src="images/twitter.png" alt="twitter"></a> </div>
+</div>
+
 
 <div id="bottom-bar">
 	<div class="container">
@@ -243,9 +170,6 @@ width:100%;
 <script src='js/knockout-3.4.0.js'></script>
 <script src="js/common.js"></script> 
 <script>
-
-/********************** login and sign up form *****************/
-
 
 var RetPage = null;
 
@@ -266,9 +190,9 @@ $(document).ready(function(e) {
 		$(this).addClass('btn-active');
 		if($(this).hasClass('btn-sign-in')){
 			$('#frmRegister').hide();
-			$('#loginbox').show(200);
+			$('#frmLogin').show(200);
 		}else{
-			$('#loginbox').hide();
+			$('#frmLogin').hide();
 			$('#frmRegister').show(200);
 		}
 	});
@@ -301,7 +225,6 @@ $(document).ready(function(e) {
 	});
 	
 	$('#frmForgot1').validate({
-		
 		errorPlacement: function(error, element) {},
 		submitHandler: function(form) {
 			
@@ -352,7 +275,6 @@ $(document).ready(function(e) {
 	$("#frmRegister").validate({
 		errorPlacement: function(error, element) {},
 		submitHandler: function(form) {
-			
 			if( $('#regPwd').val() != $('#regRePwd').val() ){
 				BAlert.find('.modal-header h3').html('<i class="fa fa-exclamation-triangle"></i> '+cLan.Error);
 				BAlert.find('.modal-body').html('<p class="text-danger">Password and retype password fields must match!</p>');
@@ -387,10 +309,9 @@ $(document).ready(function(e) {
 		}// submit handler
 	});
 	
-	$("#loginbox").validate({
+	$("#frmLogin").validate({
 		errorPlacement: function(error, element) {},
 		submitHandler: function(form) {
-			
 			formData = $(form).serialize();
 			$.ajax({
 				type: "POST", dataType: 'json', url: ServerAjax+"?h=login", data: formData,

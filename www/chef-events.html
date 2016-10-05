@@ -20,6 +20,10 @@
 .nav-tabs a, .nav-tabs .active > a{font-size:15px !important;  }
 .nav-tabs>li>a{ border:none; }
 h4.names_label label{ font-weight: normal !important; margin:3px 5px }
+div.byChef div{ margin:5px 0 6px 0; }
+div.byChef .label-primary{ font-weight:normal; background-color:#ECF8FF; color:#000; border-radius:0; font-size:12px;   }
+#chef-foods{ margin-top:0 }
+table.lessPadding td{ padding:4px 6px !important;  } 
 @media (min-width:320px) and (max-width:370px)
 {
 	.nav>li>a{ padding:10px 8px; border:none; }
@@ -60,34 +64,9 @@ h4.names_label label{ font-weight: normal !important; margin:3px 5px }
 <div class="container">
 	<div id="chef-page" class="content">
 		<h1 id="menu-button"> <a id="menu-toggle" href="#" class="btn-menu toggle"> <i class="fa fa-bars"></i> </a>
-		<p class="pageTitle" xdata-bind="text: lang.ManageD">Nearby Events</p>
+		<p class="pageTitle" xdata-bind="text: lang.ManageD">Event Reservations</p>
 		</h1>
 		
-		
-		<div class="row">
-		<div class="col-xs-12 tabs-bg">
-					<ul class="nav nav-tabs">
-						<li class="active"><a data-toggle="tab" href="#tab_nearby" class="tab_border" xdata-bind="text: lang.AboutChef">Events Near Me</a></li>
-						<li><a data-toggle="tab" xdata-bind="text: lang.Dishes" href="#tab_attending">Attending</a></li>
-						<li><a data-toggle="tab" xdata-bind="text: lang.Dishes" href="#tab_my">My Events</a></li>
-					</ul>
-					<div class="tab-content">
-						<div id="tab_nearby" class="tab-pane fade in active"> <br>
-							<p class="help-block text-center">No Events Found!</p>
-						</div>
-						<div id="tab_attending" class="tab-pane fade"> <br>
-							<p class="help-block text-center">No Events Found!</p>
-						</div>
-						<div id="tab_my" class="tab-pane fade"> <br>
-							<div class="text-center" style="margin:10px">
-							<button class="btn btn-sm btn-primary  btnShowAdd"><i class="fa fa-plus-circle"></i> <span xdata-bind="text: lang.AddNew">Create Event</span></button>
-							<button id="btnScan" class="btn btn-sm btn-primary"><i class="fa fa-qrcode"></i> &nbsp; <span xdata-bind="text: lang.ScanQR">Scan QR Code</span></button>
-							<p class="help-block text-center">No Events Found!</p>
-							</div>
-						</div>
-					</div>
-				</div>
-		</div>
 		
 		
 		
@@ -191,12 +170,12 @@ h4.names_label label{ font-weight: normal !important; margin:3px 5px }
 	</div>
 </div>
 
-<div class="modal fade" id="popUsers" tabindex="-1" role="dialog" aria-hidden="true">
+<div class="modal fade" id="popOrders" tabindex="-1" role="dialog" aria-hidden="true">
 	<div class="modal-dialog">
 		<div class="modal-content">
 			<div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-				<h4 class="modal-title" xdata-bind="text: lang.AdEdDish">Event Users</h4>
+				<h4 class="modal-title" xdata-bind="text: lang.AdEdDish">Event Orders</h4>
 			</div>
 			<div class="modal-body">
 				
@@ -233,137 +212,26 @@ $(document).ready(function(e) {
 	
 	loadPageData();
 	
-	$('#btnAdd').on('click',function(){
+	$('#chef-foods').on('click', '.btnViewOrders',function(){
+		
+		var idx = $(this).data('event-index');
+		
 		
 		var H = '';
-		$('#PS_Adcharges').html('$'+thisEvent.entry_fee);
-		$('#d_total').html('$'+thisEvent.entry_fee);
-		
-		H += '<div class="alert alert-info">Please select dishes you would like to eat on event "'+thisEvent.title+'"</div>';
-		var I = loadDishes();
-		$('#divCheckList').html(H+I);
-		$('#popDetail').modal('hide');
-		$('#popPSOrder').modal();
-		console.log(thisEvent);
-	});
-	
-	
-	$('#btnAskPermission').on('click', function(){
-
-		var formData = {
-			userId: localStorage.getItem('userId'),
-			userToken: localStorage.getItem('userToken'),
-			eventId : thisEvent.id };
-			
-		$.ajax({
-			type: "POST", dataType: 'json', url: ServerAjax+"?h=eventPermission", data: formData,
-			beforeSend: function() { waitingDialog.show(cLan.Loading, {dialogSize: 'sm', progressType: 'info'}); },
-			complete: function() { waitingDialog.hide(); },
-			}).fail(  ajaxError
-			).done(function(data){
-				if (data.Success == 'true') {
-					$('#popPermission').modal('hide');
-					BAlert.find('.modal-header h3').html('<i class="fa check"></i>'+cLan.Success);
-					BAlert.find('.modal-body').html('<p class="text-success">'+'Permission request has been sent to event organizer.'+'</p>');
-					BAlert.modal();
-					
-					loadPageData();
-					
-				} else { 
-					ErrorModalWithParm(data);
-				}
-				if (data.JS) { eval(data.JS); }
-			
-		}); // ajax	
-	
-	});
-	
-	$('#spUsersBody').on('click', '.btnAllowDeny',function(){
-		
-		var AD = $(this).hasClass('btnAllow')?'A':'D';
-		var formData = {
-				userId: localStorage.getItem('userId'),
-				userToken: localStorage.getItem('userToken'),
-				allowUser: $(this).data('id'),
-				eventId: thisEvent.id,
-				access: AD
-			};
-		
-		var TD = $(this).closest('td');
-		TD.html('<img src="images/wait.gif" />');
-				 
-		$.ajax({
-			type: "POST", dataType: 'json', url: ServerAjax+"?h=allow4Event", data: formData, context: TD
-			//beforeSend: function() {  },
-			//complete: function() { waitingDialog.hide(); },
-			}).fail(  ajaxError
-			).done(function(data){
-				if (data.Success == 'true') {
-				
-					if( data.access == 'A' ){
-						$(this).html('<i class="fa green fa-check-circle fa-2x"></i>');
-					}else{
-						$(this).html('<i class="fa red fa-times-circle fa-2x"></i>');
-					}
-					
-					if(!empty(eventData[thisEventIndex].user_data)){
-						var ud = JSON.parse(eventData[thisEventIndex].user_data);	
-						for (var i = 0; i < ud.length ; i++){
-							if(ud[i].id == data.allowUser){
-								ud[i].access = data.access;
-								eventData[thisEventIndex].user_data = JSON.stringify(ud);
-							}
-						}
-					}
-					
-				
-				} else { 
-					ErrorModalWithParm(data);
-				}
-				if (data.JS) { eval(data.JS); }
-			
-		}); // ajax	
-		
-	});	
-
-	$('.tab-content').on('click', '.btnQR',function(){
-		BAlert.find('.modal-header h3').html('<i class="fa check"></i> '+cLan.QRCode);
-		BAlert.find('.modal-body').html('').qrcode({ text: $(this).data('qr') });
-		BAlert.modal();
-	});
-	
-	$('.tab-content').on('click', '.btnUsers',function(){
-		
-		var id = $(this).data('id');
-		
-		for (var i = 0; i < eventData.length; i++){
-			if( eventData[i].id == id ){
-				thisEvent = eventData[i];
-				thisEventIndex = i;
-				break;
+		for (var i = 0; i < eventData[idx].orders.length ; i++){
+			H += '<div class="table-responsive noBorder"><table class="table lessPadding">';
+			H += '<tr class="info"><td colspan="4"><i class="fa fa-user"></i> <strong>'+eventData[idx].orders[i].first_name+' '+eventData[idx].orders[i].last_name+'</strong></td></tr>';
+			H += '<tr><td>#</td><td>Dish</td><td>Qty</td><td>Price</td></tr>';
+			var dishes = eventData[idx].orders[i].dishes;
+			for (var j = 0; j < dishes.length ; j++){
+				H += '<tr><td>'+(j+1)+'</td><td>'+dishes[j].name+'</td><td>'+dishes[j].qty+'</td><td>$'+dishes[j].price+'</td></tr>';
 			}
+			H += '</table></div>';
 		}
-		var H = '';
 		
-		H += '<div class="table-responsive noBorder"><table class="table">';
-		H += '<tr class="info"><td ><strong>Users</strong> </td><td ><strong>Allow/Deny</strong></td></tr>';
-		if(!empty(thisEvent.user_data)){
-			var ud = JSON.parse(thisEvent.user_data);	
-			console.log(ud);
-			for (var i = 0; i < ud.length ; i++){
-				H += '<tr><td>'+ud[i].first_name+' '+ud[i].last_name+'<br>'+ud[i].email+'</td>'; //<td class="text-center"><button type="button" class="btn btn-info btn-sm btnAllow btnAllowDeny" data-id="'+ud[i].id+'">Allow</button> <button type="button" class="btn btn-info btn-sm btnDeny btnAllowDeny" data-id="'+ud[i].id+'">Deny</button></td></tr>';
-				
-				if( empty(ud[i].access) || ud[i].access == 'P' ) H += '<td class="text-center"><button type="button" class="btn btn-info btn-sm btnAllow btnAllowDeny" data-id="'+ud[i].id+'">Allow</button> <button type="button" class="btn btn-info btn-sm btnDeny btnAllowDeny" data-id="'+ud[i].id+'">Deny</button></td></tr>';
-				else if( ud[i].access == 'A' ) H += '<td class="text-center"><i class="fa green fa-check-circle fa-2x"></i></td></tr>';
-				else if( ud[i].access == 'D' ) H += '<td class="text-center"><i class="fa red fa-times-circle fa-2x"></i></td></tr>';
-					
-				
-			}
-		}
-		H += '</table></div>';
 		
 		$('#spUsersBody').html(H);
-		$('#popUsers').modal();
+		$('#popOrders').modal();
 	});
 		
 	$('.tab-content').on('click', '.btnSelect',function(){
@@ -457,12 +325,11 @@ $(document).ready(function(e) {
 		$('#divCheckList [type=checkbox]').each(function(index, element) {
 			if($(this).is(':checked')){
 				qty = $('#aQty'+$(this).val()).val();
-				dishes.push( {'id':$(this).val(), 'chef_id': $(this).data('chef_id'), 'name': $(this).data('name'), 'qty':qty,'price': $(this).data('price'), 'eventPrice': $(this).data('eventprice') } ); 
-				Total = Total + parseFloat($(this).data('eventprice')) * parseInt(qty); 
+				dishes.push( {'id':$(this).val(), 'chef_id': $(this).data('chef_id'), 'name': $(this).data('name'), 'qty':qty,'price': $(this).data('price') } ); 
+				Total = Total + parseFloat($(this).data('price')) * parseFloat(qty); 
 			}	
 		});
-		Total +=  parseFloat(thisEvent.entry_fee); 
-
+		console.log(thisEvent);
 		var formData = { 	'event_id' : thisEvent.id,
 								'userId' : localStorage.getItem('userId'),
 								'userToken' : localStorage.getItem('userToken'),
@@ -471,8 +338,6 @@ $(document).ready(function(e) {
 								'entry_fee' : thisEvent.entry_fee 
 							};
 
-		console.log(formData);
-		//return false;
 		
 		//formData += '&userToken=' + localStorage.getItem('userToken');
 		$.ajax({
@@ -483,10 +348,7 @@ $(document).ready(function(e) {
 			).done(function(data){
 				if (data.Success == 'true') {
 					
-					if(!empty(data.EvTransId)){ // user have to pay his amount 
-						document.location = 'payment-options-select.html?Type=Event&ResId='+data.EvTransId+'&Amount='+Total;
-					}
-					//document.location = 'payment-options-select.html?Type=Event&ResId='+data.joinId+'&Amount='+Total;
+					document.location = 'payment-options-select.html?Type=Event&ResId='+data.joinId+'&Amount='+Total;
 					
 				} else { 
 					ErrorModalWithParm(data);
@@ -621,10 +483,9 @@ function QRFailure(message){
 }
 
 function getTotal(){
-	Total = 0.00;
 	$('#divCheckList [type=checkbox]').each(function(index, element) {
 		if($(this).is(':checked')){
-			Total = Total + $(this).data('eventprice') * $('#aQty'+$(this).val()).val(); 
+			Total = Total + $(this).data('price') * $('#aQty'+$(this).val()).val(); 
 		}	
 	});
 	Total +=  parseFloat(thisEvent.entry_fee); 
@@ -635,11 +496,10 @@ function loadPageData(){
 	var formData = {
 				userId: localStorage.getItem('userId'),
 				userToken: localStorage.getItem('userToken'), 
-				lat: localStorage.getItem('lat'),
-				lng: localStorage.getItem('lng') };
+				};
 				
 	$.ajax({
-		type: "POST", dataType: 'json', url: ServerAjax+"?h=getEvents", data: formData,
+		type: "POST", dataType: 'json', url: ServerAjax+"?h=getChefEvents", data: formData,
 		beforeSend: function() { $('div.aLoading').show();  },
 		complete: function() { $('div.aLoading').hide(); },
 	}).fail(  ajaxError )
@@ -654,62 +514,48 @@ function loadPageData(){
 				for (var i = 0; i < eventData.length; i++) {
 					$copy = $DTemp.clone().removeClass('hidden');
 					$copy.addClass( 'ID'+eventData[i].id );
-					$copy.find('img.img-responsive').prop('src', 'http://mobileapi.foodiesys.com/foodie-mssql/pics/'+eventData[i].image1);
+					//$copy.find('img.img-responsive').prop('src', 'http://mobileapi.foodiesys.com/foodie-mssql/pics/'+eventData[i].image1);
 					$copy.find('h4.dishTitle').html( eventData[i].title );
 					
-					var event_owner = (eventData[i].creator_id == localStorage.getItem('userId'));
 					
 					var T = '';
 					var Dst = distance( localStorage.getItem('lat'), localStorage.getItem('lng'), eventData[i].lat, eventData[i].lng, 'M');
+					var mo = moment( eventData[i].event_date+' '+eventData[i].event_time, 'YYYY-MM-DD HH:mm:ss' );
 					
-					if( eventData[i].availability == 'Private' ){
-						var Dst5 =  Math.ceil(Dst/5)*5;
-						T = '<span>About '+Dst5+' miles away</span>';
-					}else{
-						T = '<span>'+Dst.toFixed(1)+' miles away</span>';	
-					}
+					T += 'Address: '+eventData[i].address + ' &nbsp; <i class="fa fa-lg fa-map-marker"></i>' ;	
+					T += '<div>('+Dst.toFixed(1)+' miles away)</div>';
+					T += '<div>'+cLan.Time+': '+ mo.format('MMM D, YYYY (ddd) [at] h:mma') +'</div>';
+					T += '<div>Organizer : '+ eventData[i].creator_name +'</div>';
+					//T += ' <div>'+eventData[i].availability+' Event</div>';	
 					
-					T += '<button type="button" class="btn btn-warning btn-sm btnSelect pull-right" data-id="'+eventData[i].id+'">View Details</button><br>'+eventData[i].availability+' Event';
-					
-					if( event_owner == true && eventData[i].availability == 'Private'  ){
-						T += '<br><button type="button" class="btn btn-info btn-sm pull-right btnUsers" data-id="'+eventData[i].id+'">User Access</button>';
-					}
-					
-					if(!empty(eventData[i].Attending )){ // Attending, add QR code button
-						var QRCode = '';
-						if( !empty(eventData[i].Users)){
-							for(var k=0; k < eventData[i].Users.length; k++ ){
-								if( eventData[i].Users[k].user_id == localStorage.getItem('userId') ){
-									QRCode = eventData[i].Users[k].delivary_code;	
-								}	
+					var chefData = JSON.parse(eventData[i].chef_data);
+					var dishNames = '';
+					for(var j=0; j<chefData.length; j++){
+						if( chefData[j].id == localStorage.getItem('userId') ){
+							if(!empty(chefData[j].dishes)){
+								for(var k=0; k<chefData[j].dishes.length; k++){
+									dishNames += '<span class="label label-primary">'+chefData[j].dishes[k].name +'</span> ';
+								}
 							}	
 						}
-						if(!empty(QRCode)){
-							T += '<br><button class="btn btn-sm btnQR pull-right" data-qr="F'+eventData[i].id+':'+QRCode+'"><i class="fa fa-qrcode"></i> QR Code</button>';	
-						}
 					}
+					
+					if(!empty(dishNames)){
+						T += '<div>Dishes to be made :<br>'+ dishNames +'</div>';	
+					}
+					
+					if(empty(eventData[i].orders)){
+						T += '<div>Orders : 0</div>';	
+					}else{
+						
+						T += '<div><button data-event-index="'+i+'" class="btn btnViewOrders btn-sm btn-success">View Orders ('+eventData[i].orders.length+')</button> </div>';	
+					}
+					//T += '<button type="button" class="btn btn-warning btn-sm btnSelect pull-right" data-id="'+eventData[i].id+'">View Details</button>';
 					
 					$copy.find('div.byChef').html( T );
+					$('#chef-foods').append($copy);
 					
-					var inTab = 0;
-					if( event_owner == true ){ // I m the creator
-						$copy.clone().appendTo('#tab_my');
-						$('#tab_my p.help-block').remove();
-						$('#tab_my button.btnQR').remove();
-						inTab++;
-					}
-					if(!empty(eventData[i].Attending)){		// I m attecnding it
-						$copy.clone().appendTo('#tab_attending').find('.btnUsers').remove();
-						$('#tab_attending p.help-block').remove();	
-						inTab++;
-					}
-					if( inTab == 0 ){ 						// Its near me
-						var mo = moment(eventData[i].event_date, 'YYYY-MM-DD');
-						if( mo.isAfter(moment()) || mo.isSame(moment(),'day')  ){ // Today or In future. 
-							$copy.clone().appendTo('#tab_nearby');
-							$('#tab_nearby p.help-block').remove();	
-						}
-					}
+					
 					
 				}
 				//$DTemp.remove();
@@ -737,8 +583,8 @@ function loadDishes(){
 		for(var j=0; j< ch.dishes.length; j++){
 			var dsh = ch.dishes[j];
 			H += '<li class="list-group-item">'+
-					'<input type="checkbox" data-price="'+dsh.price+'" data-eventprice="'+dsh.eventPrice+'" data-name="'+dsh.name+'" data-chef_id="'+ch.id+'" value="'+dsh.id+'"> '+dsh.name+
-					'<div class="spDishD">'+cLan.Price+' : $'+dsh.eventPrice+ ' &nbsp; '+cLan.Qty+' : <input id="aQty'+dsh.id+'" type="number" value="1" min="1" max="50" step="1" class="input-sm inline" /></div></li>';
+					'<input type="checkbox" data-price="'+dsh.price+'" data-name="'+dsh.name+'" data-chef_id="'+ch.id+'" value="'+dsh.id+'"> '+dsh.name+
+					'<div class="spDishD">'+cLan.Price+' : $'+dsh.price+ ' &nbsp; '+cLan.Qty+' : <input id="aQty'+dsh.id+'" type="number" value="1" min="1" max="50" step="1" class="input-sm inline" /></div></li>';
 		}
 		H += '</ul>';	
 	}
